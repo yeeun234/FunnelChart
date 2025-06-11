@@ -1,0 +1,144 @@
+.login-bg {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 5px;
+}
+
+.login-logo-img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
+}
+
+.login-logo-text {
+  color: #01C2FD;
+  font-weight: bold;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  padding: 40px 32px 32px 32px;
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.login-title-box {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: left;
+}
+
+.login-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+
+
+.login-subtitle {
+  font-size: 0.85rem;
+  color: #000000;
+  margin-bottom: 18px;
+}
+
+.login-input {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  background: #fafbfc;
+}
+
+.login-btn {
+  background: #01C2FD;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 13px 0;
+  margin-bottom: 18px;
+}
+.login-btn:hover {
+  background: #0d8ddb;
+  transition: background 0.3s;
+  cursor: pointer;
+}
+
+.login-divider {
+  text-align: center;
+  color: #bbb;
+  margin: 8px 0 12px 0;
+  font-size: 0.95rem;
+  position: relative;
+}
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: #eee;
+  vertical-align: middle;
+  margin: 0 8px;
+}
+
+.login-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #eee;
+  background: #fff;
+  border-radius: 6px;
+  padding: 11px 0;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.login-social-btn.google:hover {
+  background: #f5f5f5;
+}
+.login-social-btn.naver:hover {
+  background: #e5f5e5;
+}
+.login-social-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.login-links {
+  text-align: right;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  color: #bbb;
+}
+.login-link {
+  color: #bbb;
+  text-decoration: none;
+  margin: 0 4px;
+}
+.login-link-divider {
+  margin: 0 2px;
+}
