@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FunnelChart, Funnel, Tooltip, LabelList, ResponsiveContainer } from 'recharts';
+import { FunnelChart, Funnel, Tooltip, LabelList, ResponsiveContainer, Cell  } from 'recharts';
 import { Link } from 'react-router-dom';
 import mockData from './mockFunnelData';
 import Logo from '../src/img/Logo.svg';
@@ -12,6 +12,26 @@ const paymentColors = {
   voucher: '#f0e442',
   debit_card: '#cc79a7',
 };
+
+//차트별 설명
+const descriptions = {
+  credit_card: "Credit card payments are processed instantly and offer high convenience for customers.",
+  boleto: "Boleto is a popular payment method in Brazil, allowing customers to pay via bank slips.",
+  voucher: "Voucher payments are prepaid and often used in promotional campaigns.",
+  debit_card: "Debit card payments are deducted directly from the customer's bank account.",
+};
+
+function hexToRgba(hex, alpha) {
+  const h = hex.replace('#', '');
+  const bigint = parseInt(h, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+const stageOpacities = [1, 0.8, 0.6, 0.4, 0.25]; // Adjust as needed for your number of stages
+
+
 
 export default function FunnelPage() {
   const [selectedPayment, setSelectedPayment] = useState('credit_card');
@@ -90,11 +110,15 @@ export default function FunnelPage() {
               dataKey="count"
               nameKey="stage"
               isAnimationActive
+              animationDuration={500}
               stroke={paymentColors[selectedPayment]}
-              fill={paymentColors[selectedPayment]}
-              
+              // fill={paymentColors[selectedPayment]}
             >
-              <LabelList dataKey="count" position="right" />
+              {chartData.map((entry, idx) => (
+    <Cell key={`cell-${idx}`}
+      fill={hexToRgba(paymentColors[selectedPayment], stageOpacities[idx % stageOpacities.length])} />
+  ))}
+              <LabelList dataKey="count" position="right" offset={10} />
             </Funnel>
           </FunnelChart>
         </ResponsiveContainer>
@@ -148,8 +172,8 @@ export default function FunnelPage() {
         
           </table>
         ) : (
-          <div style={{ padding: "24px 0 0 0", color: "#444", fontSize: 16 }}>
-            각 단계별 의미와 데이터에 대한 설명
+          <div style={{ padding: "24px 0 0 0", color: "#444", fontSize: 16, fontWeight:"bold"}}>
+            {descriptions[selectedPayment]}
           </div>
         )}
       </div>
