@@ -31,14 +31,14 @@ export default function FunnelPage() {
       {/* Navigation and Payment Method Buttons (same as before) */}
       <nav className="nav">
 
-       <div className="logoRow">
+       <Link to ="/" className="logoRow">
           <img
             src={Logo}
             alt="logo"
             className="logoImg"
           />
           <span className="projectName">UserFlow</span>
-        </div>
+        </Link>
         <div className="navLinks">
           <Link to="/login">
             <div className="navLink">
@@ -101,7 +101,7 @@ export default function FunnelPage() {
       </div>
 
       {/* Table Example */}
-      <div style={{ background: "#fff", borderRadius: 12, margin: "0 auto", maxWidth: 900, padding: 32 }}>
+      <div style={{ background: "#fff", borderRadius: 12, margin: "0 auto", padding: 32 }}>
         <div className='logoRow'>
            <div
             style={{
@@ -131,7 +131,7 @@ export default function FunnelPage() {
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15, tableLayout: "fixed" }}>
             <thead>
               <tr style={{ background: "#f6f7fa" }}>
-                <th style={{ padding: "8px 4px", textAlign: "left" }}>결제수단</th>
+                <th style={{ padding: "8px 4px", textAlign: "center" }}>결제수단</th>
                 {data.funnel_stages.map(stage => (
                   <th key={stage} style={{ padding: "8px 4px" }}>{stage}</th>
                 ))}

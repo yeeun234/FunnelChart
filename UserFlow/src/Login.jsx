@@ -1,10 +1,17 @@
-import React from "react";
+import { useRef, useEffect } from "react";
 import "./styles/Login.css"; 
 import logoImg from "../src/img/Logo.svg"; 
 import NaverLogo from "../src/img/NaverLogo.svg"
 import { Link } from 'react-router-dom';
 
 function Login() {
+  const inputRef = useRef(null);
+    console.log(inputRef.current)
+    useEffect(() => {
+      console.log(inputRef.current)
+      inputRef.current && inputRef.current.focus();
+    }, []);
+  
   return (
     <div className="login-bg">
       <Link to ="/" className="login-logo">
@@ -16,7 +23,7 @@ function Login() {
           <h3 className="login-title">Enter your email</h3>
           <div className="login-subtitle">Continue to "projectn"</div>
         </div>
-        <input className="login-input" type="email" placeholder="Enter your email" />
+        <input ref={inputRef} className="login-input" type="email" placeholder="Enter your email" />
         <input className="login-input" type="password" placeholder="Password" />
         <button className="login-btn">Sign in</button>
         <div className="login-divider">OR</div>
@@ -29,10 +36,10 @@ function Login() {
           Naver로 시작하기
         </button>
         <div className="login-links">
-          <a href="/join" target="_blank" className="login-link" >
+          {/* <a href="/join" target="_blank" className="login-link" >
           아이디 찾기
           </a>
-          <span className="login-link-divider">|</span>
+          <span className="login-link-divider">|</span> */}
           <Link to = "/join" className="login-link" >
           회원가입
           </Link>
