@@ -24,17 +24,18 @@ function JoinUs() {
         <div className="navLinks">
                     <Link to="/login">
                       <div className="navLink" style={{ color: "#01C2FD" }}>
-                        LOGIN
+                        로그인
                       </div>
                     </Link>
+                    <Link to="/bar"><div className="navLink" >고객재주문율 분석</div></Link>
                     <Link to="/funnel">
                       <div className="navLink" >
-                        WORK
+                        고객이탈률 분석
                       </div>
                     </Link>
                     <Link to="/">
                       <div className="navLink">
-                        ABOUT
+                        프로젝트 소개
                       </div>
                     </Link>
         </div>

@@ -3,6 +3,7 @@ import mainImg from '../src/img/blur-1853262.jpg'
 import "./styles/About.css";
 import { Link } from 'react-router-dom';
 
+
 function About() {
   return (
     <div className="appContainer">
@@ -17,14 +18,15 @@ function About() {
           <span className="projectName">UserFlow</span>
         </div>
         <div className="navLinks">
+          <Link to="/bar"><div className="navLink" >고객재주문율 분석</div></Link>
           <Link to="/funnel">
             <div className="navLink">
-              WORK
+              고객이탈률 분석
             </div>
           </Link>
           <Link to="/">
             <div className="navLink" style={{ color: "#01C2FD" }}>
-              ABOUT
+              프로젝트 소개
             </div>
           </Link>
         </div>

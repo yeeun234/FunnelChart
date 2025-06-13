@@ -4,6 +4,7 @@ import logoImg from "../src/img/Logo.svg";
 import NaverLogo from "../src/img/NaverLogo.svg"
 import { Link } from 'react-router-dom';
 
+
 function Login() {
   const inputRef = useRef(null);
     console.log(inputRef.current)

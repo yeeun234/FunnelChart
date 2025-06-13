@@ -6,15 +6,18 @@ import About from './About';
 import Login from './Login';
 import JoinUs from "./JoinUs";
 import Funnel from "./Funnel";
+import Bar from "./Bar";
 
 
 function App() {
   return (
     <Routes>
+      
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<About />} />
       <Route path="/join" element={<JoinUs />} />
       <Route path="/funnel" element={<Funnel />} />
+      <Route path="/bar" element={<Bar />} />
     </Routes>
   );
 }

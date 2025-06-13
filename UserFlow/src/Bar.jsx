@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  FunnelChart, Funnel, Tooltip, LabelList, ResponsiveContainer, Cell,
-  BarChart, Bar, Legend, Rectangle, XAxis, YAxis, CartesianGrid
-} from 'recharts';
+import { FunnelChart, Funnel, Tooltip, LabelList, ResponsiveContainer, Cell, LineChart, Line } from 'recharts';
 import { Link } from 'react-router-dom';
 import mockData from './mockFunnelData';
 import Logo from '../src/img/Logo.svg';
@@ -26,7 +23,7 @@ const descriptions = {
 const subtitle = {
   a1 : "결제수단에 따라 프로세스 어느 지점에서 고객여정이 중단되는가?",
   a2 : "결제수단에 따라 충성 고객이 많은가, 이탈율이 높은가?"
-};
+}
 
 function hexToRgba(hex, alpha) {
   const h = hex.replace('#', '');
@@ -38,24 +35,37 @@ function hexToRgba(hex, alpha) {
 }
 const stageOpacities = [1, 0.8, 0.6, 0.4, 0.25];
 
-export default function FunnelPage() {
+export default function Bar() {
   const [selectedPayment, setSelectedPayment] = useState('credit_card');
   const [activeTab, setActiveTab] = useState('table');
   const [activeAnalysisTab, setactiveAnalysisTab] = useState('a1');
   const data = mockData;
 
-  const selectedData = data.data.find(d => d.payment_type === selectedPayment);
+  // For demonstration, let's use the same payment type for both charts.
+  // You can adapt this logic to compare different payment types if needed.
+  const leftPayment = selectedPayment;
+  const rightPayment = selectedPayment;
+
+  // 전체 데이터와 결제수단별 데이터 추출
+  const leftData = data.data.find(d => d.payment_type === leftPayment);
   const overallData = data.data.find(d => d.payment_type === "overall");
-  const rightData = selectedData;
+  const rightData = data.data.find(d => d.payment_type === rightPayment);
 
-  // BarChart용 데이터 변환
-  const barChartData = data.funnel_stages.map((stage, idx) => ({
-    stage,
-    overall: overallData ? overallData.counts[idx] : 0,
-    selected: selectedData ? selectedData.counts[idx] : 0,
-  }));
+  const leftChartData = overallData
+    ? data.funnel_stages.map((stage, idx) => ({
+        stage,
+        count: overallData.counts[idx],
+      }))
+    : [];
 
-  // FunnelChart 데이터
+  const leftChartOverlapData = leftData
+    ? data.funnel_stages.map((stage, idx) => ({
+        stage,
+        count: leftData.counts[idx]+300,
+      }))
+    : [];
+    
+
   const rightChartData = rightData
     ? data.funnel_stages.map((stage, idx) => ({
         stage,
@@ -63,16 +73,8 @@ export default function FunnelPage() {
       }))
     : [];
 
-
-
-
-    //데이터 구조확인
-  console.log(barChartData)
-
   return (
-    
     <div className='appContainer'>
-      
       {/* Navigation and Payment Method Buttons */}
       <nav className="nav">
         <Link to="/" className="logoRow">
@@ -81,15 +83,18 @@ export default function FunnelPage() {
         </Link>
         <div className="navLinks">
           <Link to="/login"><div className="navLink">로그인</div></Link>
-          <Link to="/bar"><div className="navLink" >고객재주문율 분석</div></Link>
-          <div className="navLink" style={{ color: "#01C2FD" }}>고객이탈률 분석</div>
+         <div className="navLink" style={{ color: "#01C2FD" }} >고객재주문율 분석</div>
+           <Link to="/funnel"><div className="navLink" >고객이탈률 분석</div></Link>
           <Link to="/"><div className="navLink">프로젝트 소개</div></Link>
         </div>
+        
       </nav>
 
-      <div style={{ padding: "24px 0 0 0", color: "#444", fontSize: 22, fontWeight:"bold", display:"flex" ,alignItems:"left"}}>
-        {subtitle[activeAnalysisTab]}
-      </div>
+      
+          <div style={{ padding: "24px 0 0 0", color: "#444", fontSize: 22, fontWeight:"bold", display:"flex" ,alignItems:"left"}}>
+            결제수단에 따라 충성 고객이 많은가, 이탈율이 높은가?
+          </div>
+       
 
       <div style={{ width:'100vw', display: "flex", alignItems:"center", gap: 16, margin: "32px 0 0 40px" }}>
         {data.data
@@ -117,38 +122,53 @@ export default function FunnelPage() {
 
       {/* Side-by-side charts */}
       <div style={{ display: "flex", gap: 32, justifyContent: "center", margin: "32px 0" }}>
-        {/* Left: Grouped Bar Chart */}
-        <div style={{ width: "50vw", height: "50vh" }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={barChartData}
-              layout="vertical"
-              margin={{ top: 20, right: 20, left: 40, bottom: 20 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis  dataKey="stage"  type="category"/>
-              <Tooltip />
-              <Legend />
-              <Bar
-                dataKey="overall"
-                name="전체"
-                barSize={20}
-                fill="#ccc"
-              />
-              <Bar
-                dataKey="selected"
-                name={selectedPayment.replace('_', ' ')}
-                barSize={20}
-                fill={paymentColors[selectedPayment]}
-                activeBar={<Rectangle fill="pink" stroke="blue" />}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+        {/* Left: Overlapped Funnel + Line */}
+        <div style={{ position: 'relative', width: 400, height: 340 }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <FunnelChart>
+                <Tooltip />
+                <Funnel
+                  data={leftChartOverlapData}
+                  dataKey="count"
+                  nameKey="stage"
+                  isAnimationActive
+                  animationDuration={500}
+                  stroke={paymentColors[leftPayment]}
+                >
+                  {leftChartData.map((entry, idx) => (
+                    <Cell key={`cell-${idx}`}
+                      fill={hexToRgba(paymentColors[leftPayment]+10, stageOpacities[idx % stageOpacities.length])} />
+                  ))}
+                  <LabelList dataKey="count" position="inner" offset={10} />
+                </Funnel>
+              </FunnelChart>
+            </ResponsiveContainer>
+          </div>
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <FunnelChart>
+                <Tooltip />
+                <Funnel
+                  data={leftChartData}
+                  dataKey="count"
+                  nameKey="stage"
+                  isAnimationActive
+                  animationDuration={500}
+                  stroke={paymentColors[leftPayment]}
+                >
+                  {leftChartData.map((entry, idx) => (
+                    <Cell key={`cell-${idx}`}
+                      fill={hexToRgba(paymentColors[leftPayment], stageOpacities[idx % stageOpacities.length])} />
+                  ))}
+                  <LabelList dataKey="count" position="right" offset={10} />
+                </Funnel>
+              </FunnelChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-       
-        {/* Right: Funnel Chart */}
-        <div style={{ width: "50vw", height: "50vh" }}>
+        {/* Right: Pure Funnel */}
+        <div style={{ width: 400, height: 340 }}>
           <ResponsiveContainer width="100%" height="100%">
             <FunnelChart>
               <Tooltip />
@@ -158,11 +178,11 @@ export default function FunnelPage() {
                 nameKey="stage"
                 isAnimationActive
                 animationDuration={500}
-                stroke={paymentColors[selectedPayment]}
+                stroke={paymentColors[rightPayment]}
               >
                 {rightChartData.map((entry, idx) => (
                   <Cell key={`cell-${idx}`}
-                    fill={hexToRgba(paymentColors[selectedPayment], stageOpacities[idx % stageOpacities.length])} />
+                    fill={hexToRgba(paymentColors[rightPayment], stageOpacities[idx % stageOpacities.length])} />
                 ))}
                 <LabelList dataKey="count" position="right" offset={10} />
               </Funnel>
@@ -211,7 +231,7 @@ export default function FunnelPage() {
             <tbody>
               <tr>
                 <td style={{ padding: "8px 4px", fontWeight: "bold" }}>{selectedPayment.replace('_', ' ')}</td>
-                {selectedData.counts.map((cnt, idx) => (
+                {leftData.counts.map((cnt, idx) => (
                   <td key={idx} style={{ padding: "8px 4px" }}>{cnt}</td>
                 ))}
               </tr>

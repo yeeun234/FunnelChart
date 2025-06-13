@@ -2,6 +2,12 @@ export default {
   funnel_stages: ["ordered", "paid", "shipped", "delivered"],
   data: [
     {
+      payment_type: "overall",
+      counts: [45932, 24547, 20215, 12539],
+      conversion_rates: [1.0, 0.54, 0.837, 0.619],
+      churn_rates: [0.0, 0.46, 0.163, 0.381]
+    },
+    {
       payment_type: "credit_card",
       counts: [21932, 11847, 9915, 6139],
       conversion_rates: [1.0, 0.54, 0.837, 0.619],
