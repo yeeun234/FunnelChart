@@ -7,10 +7,14 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const inputRef = useRef(null);
-  const [email, setEmail] = useState('');
+  const [id, setid] = useState('');
   const [pw, setPw] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const MIN_ID_LENGTH = 4;      // 예: 아이디 최소 4자
+  const MIN_PW_LENGTH = 8;      // 예: 비밀번호 최소 8자
+
+  
 
   useEffect(() => {
     inputRef.current && inputRef.current.focus();
@@ -19,13 +23,21 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-    if (!email || !pw) {
-      setError("이메일과 비밀번호를 모두 입력하세요.");
+    if (!id || !pw) {
+      setError("아이디와 비밀번호를 모두 입력하세요.");
+      return;
+    }
+    if (id.length < MIN_ID_LENGTH) {
+    setError(`아이디는 최소 ${MIN_ID_LENGTH}자 이상이어야 합니다.`);
+    return;
+    }
+    if (pw.length < MIN_PW_LENGTH) {
+      setError(`비밀번호는 최소 ${MIN_PW_LENGTH}자 이상이어야 합니다.`);
       return;
     }
     try {
     const res = await axios.post('http://10.125.121.173:8080/login', {
-      id: email,
+      id: id,
       password: pw
     });
      console.log("서버 응답:", res.headers);
@@ -34,11 +46,11 @@ function Login() {
     if (token) {
       localStorage.setItem("accessToken", token);
       // 로그인 성공
-      alert(`${email}님 환영합니다!`);
+      alert(`${id}님 환영합니다!`);
       // 예시: 메인 페이지로 이동
       navigate("/");
     } else {
-      setError("이메일 또는 비밀번호가 일치하지 않습니다.");
+      setError("아이디 또는 비밀번호가 일치하지 않습니다.");
     }
   } catch (err) {
     console.error("로그인 에러:", err, err.response);
@@ -54,16 +66,16 @@ function Login() {
       </Link>
       <form className="login-card" onSubmit={handleLogin}>
         <div className="login-title-box">
-          <h3 className="login-title">Enter your email</h3>
+          <h3 className="login-title">Enter your account</h3>
           <div className="login-subtitle">Continue to "UserFlow"</div>
         </div>
         <input
           ref={inputRef}
           className="login-input"
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={e => setEmail(e.target.value.trim())}
+          type="text"
+          placeholder="Enter your ID"
+          value={id}
+          onChange={e => setid(e.target.value.trim())}
         />
         <input
           className="login-input"
@@ -75,7 +87,7 @@ function Login() {
         <button className="login-btn" type="submit">Sign in</button>
         {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
         <div className="login-divider">OR</div>
-        <button className="login-social-btn google" type="button" onClick={() => { window.location.href = "http://10.125.121.173.nip.io:8080/oauth2/authorization/google"; }}
+        <button className="login-social-btn google" type="button" onClick={() => { window.location.href = "http://10.125.121.173:8080/oauth2/authorization/google"; }}
 >
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" className="login-social-icon" />
           Google로 시작하기

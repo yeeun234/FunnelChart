@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Logo from '../src/img/Logo.svg';
 import "./styles/Funnel.css";
+import NavBar from './NavBar';
 
 // 결제수단별 색상
 const paymentColors = {
@@ -17,9 +18,9 @@ const paymentColors = {
 };
 
 const descriptions = {
-  credit_card: "신용카드 결제는 승인까지 이탈이 거의 없으나, 배송 단계에서 이탈률이 급증합니다. 배송 지연, 결제 승인 후 번복, 신뢰 문제 등이 shipped 단계 이탈의 주요 원인일 수 있습니다.",
-  boleto: "Boleto 결제는 결제 완료까지 고객 이탈이 적으나, 배송 단계에서 이탈률이 크게 오릅니다. 이는 boleto 특성상 결제 미완료, 결제 지연, 혹은 배송 전 결제 포기 사례가 많기 때문일 수 있습니다.",
-  voucher: "Voucher 결제는 승인 이후부터 이탈률이 빠르게 증가하며, 배송 단계에서 최고치에 도달합니다. 프로모션 사용 후 구매 포기, 쿠폰 조건 미충족 등이 주요 원인일 수 있습니다.",
+  credit_card: "신용카드 결제는 승인까지 이탈이 거의 없으나, 배송 단계에서 이탈률이 급증합니다. 배송 지연, 결제 승인 후 번복, 신뢰 문제 등이 배송시작 단계 이탈의 주요 원인일 수 있습니다.",
+  boleto: "계좌이체는 결제 완료까지 고객 이탈이 적으나, 배송 단계에서 이탈률이 크게 오릅니다. 이는 계좌이체 특성상 결제 미완료, 결제 지연, 혹은 배송 전 결제 포기 사례가 많기 때문일 수 있습니다.",
+  voucher: "바우처 결제는 승인 이후부터 이탈률이 빠르게 증가하며, 배송 단계에서 최고치에 도달합니다. 프로모션 사용 후 구매 포기, 쿠폰 조건 미충족 등이 주요 원인일 수 있습니다.",
   debit_card: "직불카드는 승인까지 이탈이 적지만, 배송 단계에서 이탈률이 크게 오릅니다. 결제 실패, 잔고 부족, 배송 문제 등이 이 구간의 주요 이탈 요인으로 보입니다.",
 };
 
@@ -120,22 +121,9 @@ export default function FunnelPage() {
   // 3. YAxis에 적용
   <YAxis domain={[0, yAxisMax]} tickFormatter={tick => `${tick}%`} />
 
-
   return (
     <div className='appContainer'>
-      {/* Navigation */}
-      <nav className="nav">
-        <Link to="/" className="logoRow">
-          <img src={Logo} alt="logo" className="logoImg" />
-          <span className="projectName">UserFlow</span>
-        </Link>
-        <div className="navLinks">
-          <Link to="/login"><div className="navLink">로그인</div></Link>
-          <Link to="/bar"><div className="navLink">고객재주문율 분석</div></Link>
-          <div className="navLink" style={{ color: "#01C2FD" }}>고객이탈률 분석</div>
-          <Link to="/"><div className="navLink">프로젝트 소개</div></Link>
-        </div>
-      </nav>
+      <NavBar></NavBar>
 
       <div style={{ padding: "24px 0 0 0", color: "#444", fontSize: 22, fontWeight: "bold", display: "flex", alignItems: "left" }}>
         결제수단에 따라 프로세스 어느 지점에서 고객여정이 중단되는가?

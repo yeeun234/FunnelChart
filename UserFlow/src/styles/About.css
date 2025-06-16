@@ -26,21 +26,10 @@
   font-weight: bold;
   font-size: 20px;
 }
-.navLinks {
-  display: flex;
-  gap: 40px;
-  font-size: 18px;
-}
-.navLink {
-  color: #000000;
-  font-weight: bold;
-}
-.navLink:hover {
-  color: #01C2FD;
-}
+
 
 .mainImg {
-  width: 100vw;           /* Fill the full viewport width */
+  width: 100%;        /* Fill the full viewport width */
   max-width: 100%;        /* Prevent overflow in smaller containers */
   height: 350px;          /* Set a fixed or preferred height for desktop */
   object-fit: cover;      /* Crop to fill the area without distortion */
