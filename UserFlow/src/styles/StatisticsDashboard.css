@@ -1,0 +1,56 @@
+.dashboard-container {
+  background: #fff;
+  min-height: 100vh;
+  padding: 32px 0;
+  padding-top: 72px;
+}
+
+.dashboard-title {
+  color: #01C1FE;
+  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 60px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.metric-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(1, 193, 254, 0.07);
+  padding: 24px 24px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transition: box-shadow 0.2s;
+  border: 1px solid #f0f4f8;
+}
+
+.metric-card:hover {
+  box-shadow: 0 8px 32px rgba(1, 193, 254, 0.13);
+  border-color: #01C1FE;
+}
+
+.metric-card h3 {
+  color: #222;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .dashboard-title {
+    font-size: 24px;
+  }
+  .metric-card {
+    padding: 16px 8px;
+  }
+} 

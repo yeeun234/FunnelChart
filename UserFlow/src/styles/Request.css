@@ -1,0 +1,133 @@
+
+.request-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.request-card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.07);
+  padding: 48px 40px 36px 40px;
+  max-width: 480px;
+  width: 100%;
+  margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.request-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+.request-icon {
+  font-size: 28px;
+  margin-bottom: 2px;
+}
+.request-label {
+  font-size: 15px;
+  color: #01C2FD;
+  font-weight: 500;
+}
+.request-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  /* margin: 2px 0 0 0; */
+}
+.request-desc {
+  font-size: 15px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+.input-box {
+  flex: 1 1 0;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 15px;
+  background: #fafbfc;
+  transition: border 0.2s;
+}
+.input-box:focus {
+  border: 1.5px solid #01C2FD;
+  outline: none;
+}
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+/* .full-width {
+  width: 100%;
+} */
+.textarea-box {
+  /* width: 100%; */
+  height: 120px;
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 15px;
+  background: #fafbfc;
+  resize: none;
+  transition: border 0.2s;
+}
+.textarea-box:focus {
+  border: 1.5px solid #01C2FD;
+  outline: none;
+}
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+.btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.18s;
+}
+.btn.cancel {
+  background-color: #f2f2f2;
+  color: #333;
+}
+.btn.submit {
+  background-color: #01C2FD;
+  color: white;
+}
+.btn.submit:hover {
+  background-color: #009edb;
+}
+.form-error {
+  color: #f44336;
+  margin-top: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+@media (max-width: 600px) {
+  .request-card {
+    padding: 24px 8vw 20px 8vw;
+    max-width: 98vw;
+  }
+  .form-row { flex-direction: column; gap: 8px; }
+}

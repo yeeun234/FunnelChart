@@ -1,0 +1,68 @@
+.appContainer {
+  min-height: 100vh;
+  padding: 0 40px 40px 40px;
+  background: white;
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+
+}
+
+.metrics-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.metric-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(1, 193, 254, 0.08);
+  border-color: #01C1FE;
+}
+
+.metric-card h3 {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.metric-card p {
+  color: #01C1FE;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .appContainer {
+    padding: 0 20px 20px 20px;
+  }
+
+  .metrics-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card {
+    padding: 1rem;
+  }
+
+  .metric-card p {
+    font-size: 1.2rem;
+  }
+} 

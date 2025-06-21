@@ -1,16 +1,47 @@
 .appContainer {
   background: #ffffff;
   min-height: 100vh;
-  
+  padding-top: 72px;
+  /* max-width: 1200px; */
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.aboutAppContainer {
+  background: transparent;
+  min-height: 100vh;
+  padding-top: 72px;
+  padding-bottom: 52px;
+  /* max-width: 1200px; */
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.navContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  /* border-bottom: 1px solid #eee; */
+  /* box-shadow: 0 1px 0 0 rgba(0,0,0,0.15); */
 }
 .nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: transparent;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 16px 32px; 
-  border-bottom: 1px solid #eee;
-  box-shadow: 0 1px 0 0 rgba(0,0,0,0.15);
-  background: #fff;
+  padding: 0;
+  border: none;
+  box-shadow: none;
 }
 .logoRow {
   display: flex;
@@ -20,6 +51,8 @@
 .logoImg {
   width: 32px;
   height: 32px;
+  box-shadow: none;
+  filter: none;
 }
 .projectName {
   color: #01C1FE;
@@ -38,18 +71,18 @@
 }
 
 .section {
-  background: #fff;
-  text-align: center;
+  /* background: #fff; */
+  /* text-align: center; */
   padding: 60px 0;
 }
 .sectionTitle {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: bold; 
+  /* h2니까 어차피 자동적용이긴하지만 브라우저별로 다를수있으니 따로해주기 */
   color: #000000;
-  margin-bottom: 20px;
 }
 .sectionDesc {
-  max-width: 500px;
+  max-width: 800px;
   margin: 0 auto 32px;
   color: #444;
   line-height: 1.5;
@@ -72,4 +105,126 @@ box-shadow: 0 4px 10px rgba(11, 76, 255, 0.3);
   outline: 2px solid #1da1f2;
   outline-offset: 2px;
   transition: 0.2s;
+}
+
+.heroSection {
+  width: 100%;
+  /* background: linear-gradient(120deg, #E6F9FE 60%, #fff 100%); */
+  padding: 100px 0 70px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
+.heroTitle {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #222;
+  margin-bottom: 0;
+  line-height: 1.2;
+  letter-spacing: -1px;
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.heroTitle.animate-pop {
+  opacity: 1;
+  transform: translateY(0);
+}
+.heroTitle.delay {
+  transition-delay: 0.1s;
+}
+
+.heroSubtitle {
+  font-size: 1.35rem;
+  color: #333;
+  margin-bottom: 36px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+}
+
+.heroBtn {
+  background: linear-gradient(90deg, #01C1FE 0%, #12D8FA 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 18px 48px;
+  font-size: 1.18rem;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(1, 193, 254, 0.13);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  text-shadow: 0 1px 8px #01c1fe33;
+}
+.heroBtn:hover {
+  background: linear-gradient(90deg, #12D8FA 0%, #01C1FE 100%);
+  box-shadow: 0 8px 32px rgba(1, 193, 254, 0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+
+@media (max-width: 700px) {
+  .mainImg { height: 180px; }
+  .section { padding: 32px 0 24px 0; }
+  .heroSection { padding: 48px 0 32px 0; min-height: 220px; }
+  .heroTitle { font-size: 2rem; }
+  .heroBtn { padding: 12px 24px; font-size: 1rem; }
+}
+
+.fade-section {
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.fade-section.fade-in {
+  opacity: 1;
+}
+
+.mainImgContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto 40px auto;
+}
+
+.mainImg {
+  width: 100%;
+  max-width: 700px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(1,193,254,0.13), 0 1.5px 8px #b2eaff33;
+  transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+}
+.mainImg:hover {
+  transform: scale(1.025);
+  box-shadow: 0 16px 48px rgba(1,193,254,0.18), 0 2px 12px #b2eaff44;
+}
+
+.section {
+  background: #fff;
+  text-align: center;
+  padding: 60px 0 48px 0;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(1,193,254,0.07);
+  margin-bottom: 40px;
+  position: relative;
+}
+.section::before {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #01C1FE 0%, #12D8FA 100%);
+  border-radius: 2px;
+  margin: 0 auto 24px auto;
 }

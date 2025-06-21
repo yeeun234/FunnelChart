@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Logo from '../src/img/Logo.svg';
 import "./styles/Funnel.css";
 
 function JoinUs() {
@@ -102,29 +101,7 @@ function JoinUs() {
 
 
   return (
-    <div className="appContainer"  >
-
-      <nav className="nav" style={{ width: "1280px" }} >
-        <Link to="/" className="logoRow">
-          <img src={Logo} alt="UserFlow Logo" className="logoImg" />
-          <span className="projectName">UserFlow</span>
-        </Link>
-        <div className="navLinks">
-          {isLoggedIn ? (
-            <div className="navLink" onClick={handleLogout}>
-              로그아웃
-            </div>
-          ) : (
-            <Link to="/login"><div className="navLink">로그인</div></Link>
-          )}
-          <Link to="/bar"><div className="navLink" >고객재주문율 분석</div></Link>
-          <Link to="/funnel">
-            <div className="navLink" >
-              고객이탈률 분석
-            </div>
-          </Link>
-        </div>
-      </nav>
+    <div >
       <main>
         <section>
           

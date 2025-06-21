@@ -31,6 +31,13 @@ const paymentNames = {
   debit_card: "체크카드",
 };
 
+const stageNames = {
+  created: "주문 생성",
+  invoiced: "청구",
+  approved: "결제완료",
+  shipped: "배송중",
+};
+
 const apiEndpoints = {
   overall: "http://10.125.121.173:8080/api/public/funnel/overall",
   credit_card: "http://10.125.121.173:8080/api/public/funnel/credit_card",
@@ -90,7 +97,7 @@ export default function FunnelPage() {
 
   // BarChart 데이터: 전체 + 선택 결제수단
   const barChartData = funnelStages.map((stage, idx) => ({
-    stage,
+    stage: stageNames[stage] || stage,
     overall: overallData.count[idx],
     selected: selectedData.count[idx],
   }));
@@ -98,7 +105,7 @@ export default function FunnelPage() {
   // LineChart 데이터: 결제수단별 이탈률(%) 모두 겹치기
   const paymentTypes = Object.keys(paymentColors);
   const lineChartData = funnelStages.map((stage, idx) => {
-    const obj = { stage };
+    const obj = { stage: stageNames[stage] || stage };
     paymentTypes.forEach(type => {
       const paymentObj = allPaymentsData.find(d => d.payment_type === type);
       obj[type] = paymentObj ? Number(paymentObj.churn_rates[idx]) : null; // *100: % 변환
@@ -125,7 +132,7 @@ export default function FunnelPage() {
     <div className='appContainer'>
       <NavBar></NavBar>
 
-      <div style={{ padding: "24px 0 0 0", color: "#444", fontSize: 22, fontWeight: "bold", display: "flex", alignItems: "left" }}>
+      <div style={{ marginTop: "10px", padding: "14px 0 0 0", color: "#444", fontSize: 22, fontWeight: "bold", display: "flex", alignItems: "left" }}>
         결제수단에 따라 프로세스 어느 지점에서 고객여정이 중단되는가?
       </div>
 
@@ -195,10 +202,11 @@ export default function FunnelPage() {
               <XAxis dataKey="stage" />
               <YAxis domain={[0, yAxisMax]} tickFormatter={tick => `${tick}%`} />
               <Tooltip formatter={v => `${v}%`} />
-              <Legend formatter={(value) => paymentNames[value] || value}  />
+              <Legend />
               {paymentTypes.map(type => (
                 <Line
                   key={type}
+                  name={paymentNames[type]}
                   type="monotone"
                   dataKey={type}
                   stroke={paymentColors[type]}
@@ -246,7 +254,7 @@ export default function FunnelPage() {
               <tr style={{ background: "#f6f7fa" }}>
                 <th style={{ padding: "8px 4px", textAlign: "center" }}>결제수단</th>
                 {funnelStages.map(stage => (
-                  <th key={stage} style={{ padding: "8px 4px" }}>{stage}</th>
+                  <th key={stage} style={{ padding: "8px 4px" }}>{stageNames[stage] || stage}</th>
                 ))}
               </tr>
             </thead>

@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import "./styles/Login.css"; 
-import logoImg from "../src/img/Logo.svg"; 
-import NaverLogo from "../src/img/NaverLogo.svg";
+import logoImg from "./img/Logo.svg"; 
+import NaverLogo from "./img/NaverLogo.svg";
 import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -40,15 +40,28 @@ function Login() {
       id: id,
       password: pw
     });
-     console.log("서버 응답:", res.headers);
+    console.log("서버 응답:", res.headers);
      const token = res.headers.authorization;
-      console.log("token:",token);
+     const role = res.data.role;  // Role 가져옴
+     const username = res.data.username;
+     
+     console.log("token:",token);
+     console.log("role: ", role) 
+     console.log("username: ", username)
     if (token) {
       localStorage.setItem("accessToken", token);
+      localStorage.setItem("userRole", role);
+      localStorage.setItem("username", username);
       // 로그인 성공
-      alert(`${id}님 환영합니다!`);
+      alert(`${username}님 환영합니다!`);
+      if(role === 'ROLE_MEMBER'){
+        navigate("/");   
+      } else if (role === 'ROLE_MANAGER'){
+        navigate("/")
+      } else {
+        setError("알 수 없는 사용자 권한입니다.")
+      }
       // 예시: 메인 페이지로 이동
-      navigate("/");
     } else {
       setError("아이디 또는 비밀번호가 일치하지 않습니다.");
     }
@@ -87,12 +100,11 @@ function Login() {
         <button className="login-btn" type="submit">Sign in</button>
         {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
         <div className="login-divider">OR</div>
-        <button className="login-social-btn google" type="button" onClick={() => { window.location.href = "http://10.125.121.173:8080/oauth2/authorization/google"; }}
->
+        <button className="login-social-btn google" type="button" onClick={() => { window.location.href = "http://10.125.121.173:8080/oauth2/authorization/google"; }}>
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" className="login-social-icon" />
           Google로 시작하기
         </button>
-        <button className="login-social-btn naver" type="button">
+        <button className="login-social-btn naver" type="button" onClick={() => { window.location.href = "http://localhost:8080/oauth2/authorization/naver"; }}>
           <img src={NaverLogo} alt="Naver" className="login-social-icon" />
           Naver로 시작하기
         </button>
