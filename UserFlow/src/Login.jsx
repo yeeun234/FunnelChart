@@ -40,14 +40,14 @@ function Login() {
       id: id,
       password: pw
     });
-    console.log("서버 응답:", res.headers);
+    // console.log("서버 응답:", res.headers);
      const token = res.headers.authorization;
      const role = res.data.role;  // Role 가져옴
      const username = res.data.username;
      
-     console.log("token:",token);
-     console.log("role: ", role) 
-     console.log("username: ", username)
+    //  console.log("token:",token);
+    //  console.log("role: ", role) 
+    //  console.log("username: ", username)
     if (token) {
       localStorage.setItem("accessToken", token);
       localStorage.setItem("userRole", role);
@@ -67,7 +67,12 @@ function Login() {
     }
   } catch (err) {
     console.error("로그인 에러:", err, err.response);
-    setError("로그인 중 오류가 발생했습니다.");
+    // 실무 보안: 아이디/비밀번호 오류는 항상 동일 메시지
+    if (err.response && err.response.status === 401) {
+      setError("아이디 또는 비밀번호가 일치하지 않습니다.");
+    } else {
+      setError("로그인 중 오류가 발생했습니다.");
+    }
   }
 };
 
@@ -99,7 +104,7 @@ function Login() {
         />
         <button className="login-btn" type="submit">Sign in</button>
         {error && <div style={{ color: "red", marginTop: 8 }}>{error}</div>}
-        <div className="login-divider">OR</div>
+        {/* <div className="login-divider">OR</div>
         <button className="login-social-btn google" type="button" onClick={() => { window.location.href = "http://10.125.121.173:8080/oauth2/authorization/google"; }}>
           <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" className="login-social-icon" />
           Google로 시작하기
@@ -107,7 +112,7 @@ function Login() {
         <button className="login-social-btn naver" type="button" onClick={() => { window.location.href = "http://localhost:8080/oauth2/authorization/naver"; }}>
           <img src={NaverLogo} alt="Naver" className="login-social-icon" />
           Naver로 시작하기
-        </button>
+        </button> */}
         <div className="login-links">
           <Link to="/join" className="login-link">회원가입</Link>
         </div>

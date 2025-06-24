@@ -68,9 +68,52 @@ const binLabelMap = {
 };
 const binOrder = ["빠름 (≤7일)", "보통 (8-15일)", "느림 (16-30일)", "매우 느림 (>30일)"];
 
+const DatasetInfoModal = ({ onClose }) => (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <h2 style={{ color: mainColor }}>Olist E-commerce 데이터셋 정보</h2>
+      <p>본 대시보드는 브라질 이커머스 플랫폼 Olist의 공개 데이터셋을 기반으로 합니다. 데이터셋은 여러 개의 파일로 구성되어 있으며, 각 파일의 주요 정보는 다음과 같습니다.</p>
+      <ul>
+        <li><b>olist_customers_dataset.csv</b>: 고객 정보 (고유 ID, 위치 등)</li>
+        <li><b>olist_orders_dataset.csv</b>: 주문 정보 (주문 ID, 고객 ID, 주문 상태, 시간 등)</li>
+        <li><b>olist_order_items_dataset.csv</b>: 주문 내 상품 정보 (상품 ID, 가격, 배송비 등)</li>
+        <li><b>olist_order_payments_dataset.csv</b>: 주문 결제 정보 (결제 수단, 할부 횟수 등)</li>
+        <li><b>olist_order_reviews_dataset.csv</b>: 주문 리뷰 정보 (리뷰 점수, 코멘트 등)</li>
+        <li><b>olist_products_dataset.csv</b>: 상품 정보 (카테고리, 크기 등)</li>
+        <li><b>olist_sellers_dataset.csv</b>: 판매자 정보 (고유 ID, 위치 등)</li>
+        <li><b>olist_geolocation_dataset.csv</b>: 지리 정보 (우편번호, 위도, 경도 등)</li>
+        <li><b>product_category_name_translation.csv</b>: 상품 카테고리 영문 번역</li>
+      </ul>
+      <a href="/db/archive.zip" download="olist_ecommerce_dataset.zip" style={{ textAlign: 'left', color: '#01C1FE', fontWeight:'500', textDecoration: 'underline' }}>
+        원본 데이터 다운로드
+       </a>
+      <button onClick={onClose} className="modal-close-btn">닫기</button>
+    </div>
+  </div>
+);
+
+// 성능 지표 계산
+const calculatePerformanceMetrics = () => {
+  const TP = 229; // True Positive
+  const TN = 18593; // True Negative
+  const FP = 14; // False Positive
+  const FN = 447; // False Negative
+  
+  const accuracy = ((TP + TN) / (TP + TN + FP + FN) * 100).toFixed(1);
+  const precision = (TP / (TP + FP) * 100).toFixed(1);
+  const recall = (TP / (TP + FN) * 100).toFixed(1);
+  const f1Score = (2 * (precision * recall) / (parseFloat(precision) + parseFloat(recall))).toFixed(1);
+  
+  return { accuracy, precision, recall, f1Score };
+};
+
+const performanceMetrics = calculatePerformanceMetrics();
+
 export default function StatisticsDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showPerformanceMetrics, setShowPerformanceMetrics] = useState(false);
 
   // States for API data - ALL data is now held in state
   const [summaryStats, setSummaryStats] = useState([]);
@@ -81,6 +124,7 @@ export default function StatisticsDashboard() {
   const [deliveryImprovement, setDeliveryImprovement] = useState([]);
 
   useEffect(() => {
+    setIsModalOpen(true); // Show modal on component mount
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -137,10 +181,14 @@ export default function StatisticsDashboard() {
         // Delivery time distribution chart: use deliverySpeedRes, category/value2
         setDeliveryDist(
           deliverySpeedRes.data
-            .map(d => ({
-              bin: binLabelMap[d.category] || d.category,
-              count: Number(d.value2)
-            }))
+            .map(d => {
+              // value2가 "1,072/33,698" 형태이므로 분모 부분만 추출
+              const totalCount = d.value2 ? parseInt(d.value2.split('/')[1].replace(/,/g, '')) : 0;
+              return {
+                bin: binLabelMap[d.category] || d.category,
+                count: totalCount
+              };
+            })
             .sort((a, b) => binOrder.indexOf(a.bin) - binOrder.indexOf(b.bin))
         );
 
@@ -184,9 +232,16 @@ export default function StatisticsDashboard() {
 
   return (
     <div className="appContainer dashboard-container">
+      {isModalOpen && <DatasetInfoModal onClose={() => setIsModalOpen(false)} />}
       <NavBar />
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: '32px 0' }}>
-        <h1 className="dashboard-title">분석 한눈에 보기</h1>
+        <h1 className="dashboard-title">분석 대시보드</h1>
+        <p style={{ textAlign: 'right', fontSize: '13px', color: '#888', marginTop: '-10px', marginBottom: '24px' }}>
+          * 본 분석은 Olist E-commerce 데이터셋을 기반으로 합니다. 
+          <a href="https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce" target="_blank" rel="noopener noreferrer" style={{ marginLeft: '8px', color: '#01C1FE', textDecoration: 'underline', fontWeight:'600' }}>
+            원본 데이터 보기
+          </a>
+        </p>
         <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', marginBottom: 32 }}>
           {summaryStats.map((stat, index) => (
             <div key={index} style={{
@@ -240,7 +295,7 @@ export default function StatisticsDashboard() {
           <div className="metric-card">
             <h3>배송 기간이 6개월 재구매 확률에 미치는 영향</h3>
             <p style={{ fontSize: 14, color: '#666', marginTop: 4, marginBottom: 12 }}>
-              배송이 하루씩 늦어질수록 고객의 재구매 확률이 어떻게 변하는지를 보여줍니다. 그래프에서 볼 수 있듯이, 배송 기간이 길어짐에 따라 재구매 확률이 아주 약간 감소하지만, 그 변화는 1.8%에서 1.5% 사이로 매우 미미합니다. 이는 배송 기간이 재구매 결정에 큰 영향을 주지 않으며, 다른 요인(제품 만족도, 가격 등)이 더 중요할 수 있음을 시사합니다.
+              배송이 하루씩 늦어질수록 고객의 재구매 확률이 어떻게 변하는지를 보여줍니다. 
             </p>
             <ResponsiveContainer width="100%" height={220}>
               <LineChart data={deliveryTimeImpact}>
@@ -340,12 +395,41 @@ export default function StatisticsDashboard() {
                 {confusionMatrix.map((row, idx) => (
                   <tr key={row.label} style={{ background: idx % 2 === 0 ? '#fff' : secondaryColor }}>
                     <td style={{ fontWeight: 600 }}>{row.label === 'No Repurchase' ? '미재구매' : '재구매'}</td>
-                    <td style={{ textAlign: 'center' }}>{row.predNo}</td>
-                    <td style={{ textAlign: 'center' }}>{row.predYes}</td>
+                    <td style={{ textAlign: 'center' }}>
+                      {row.predNo}
+                      <div style={{ fontSize: 11, color: '#666', marginTop: 2 }}>
+                        {row.label === 'No Repurchase' ? '(TN)' : '(FN)'}
+                      </div>
+                    </td>
+                    <td style={{ textAlign: 'center' }}>
+                      {row.predYes}
+                      <div style={{ fontSize: 11, color: '#666', marginTop: 2 }}>
+                        {row.label === 'No Repurchase' ? '(FP)' : '(TP)'}
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            
+            {/* 오차 행렬 설명 */}
+            <div style={{ 
+              background: '#E3F2FD', 
+              border: '1px solid #90CAF9', 
+              borderRadius: 8, 
+              padding: 12, 
+              marginTop: 16,
+              fontSize: 13,
+              color: '#1E3A8A'
+            }}>
+              <div style={{ fontWeight: 600, marginBottom: 8 }}>📊 오차 행렬 해석:</div>
+              <div style={{ lineHeight: 1.4 }}>
+                <div>• <strong>TP (True Positive):</strong> 229건 - 재구매 예측 성공 ✅</div>
+                <div>• <strong>TN (True Negative):</strong> 18,593건 - 미재구매 예측 성공 ✅</div>
+                <div>• <strong>FP (False Positive):</strong> 14건 - 재구매로 잘못 예측 ❌</div>
+                <div>• <strong>FN (False Negative):</strong> 447건 - 재구매를 놓침 ❌</div>
+              </div>
+            </div>
           </div>
           <div className="metric-card" style={{ gridColumn: '1/2' }}>
             <h3>리뷰 점수별 재구매율</h3>
@@ -378,6 +462,91 @@ export default function StatisticsDashboard() {
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+        
+        {/* 머신러닝 모델 성능 지표 섹션 */}
+        <div style={{ 
+          background: '#fff', 
+          borderRadius: 12, 
+          boxShadow: '0 2px 8px rgba(1,193,254,0.07)', 
+          border: '1px solid #f0f4f8', 
+          padding: 24, 
+          marginTop: 32,
+          marginBottom: 32,
+          gridColumn: '1 / -1'
+        }}>
+          <div style={{ fontWeight: 600, fontSize: 18, color: '#222', marginBottom: 12 }}>머신러닝 모델 성능 지표</div>
+          
+          {/* 성능 지표 표 */}
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 15, marginBottom: 16 }}>
+            <thead>
+              <tr style={{ background: secondaryColor }}>
+                <th style={{ padding: '8px 4px', textAlign: 'center' }}>지표</th>
+                <th style={{ padding: '8px 4px', textAlign: 'center' }}>값</th>
+                <th style={{ padding: '8px 4px', textAlign: 'center' }}>의미</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ padding: '8px 4px', textAlign: 'center', fontWeight: 600 }}>정확도 (Accuracy)</td>
+                <td style={{ padding: '8px 4px', textAlign: 'center', color: mainColor, fontWeight: 600 }}>{performanceMetrics.accuracy}%</td>
+                <td style={{ padding: '8px 4px', textAlign: 'center', fontSize: 13 }}>전체 예측 중 정확한 비율</td>
+              </tr>
+              <tr style={{ background: '#f9f9f9' }}>
+                <td style={{ padding: '8px 4px', textAlign: 'center', fontWeight: 600 }}>정밀도 (Precision)</td>
+                <td style={{ padding: '8px 4px', textAlign: 'center', color: mainColor, fontWeight: 600 }}>{performanceMetrics.precision}%</td>
+                <td style={{ padding: '8px 4px', textAlign: 'center', fontSize: 13 }}>재구매 예측 중 실제 재구매 비율</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '8px 4px', textAlign: 'center', fontWeight: 600 }}>재현율 (Recall)</td>
+                <td style={{ padding: '8px 4px', textAlign: 'center', color: mainColor, fontWeight: 600 }}>{performanceMetrics.recall}%</td>
+                <td style={{ padding: '8px 4px', textAlign: 'center', fontSize: 13 }}>실제 재구매 중 정확히 예측한 비율</td>
+              </tr>
+              <tr style={{ background: '#f9f9f9' }}>
+                <td style={{ padding: '8px 4px', textAlign: 'center', fontWeight: 600 }}>F1-Score</td>
+                <td style={{ padding: '8px 4px', textAlign: 'center', color: mainColor, fontWeight: 600 }}>{performanceMetrics.f1Score}%</td>
+                <td style={{ padding: '8px 4px', textAlign: 'center', fontSize: 13 }}>정밀도와 재현율의 조화평균</td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/* 재현율 토글바 */}
+          <div style={{ 
+            background: '#E3F2FD', 
+            border: '1px solid #90CAF9', 
+            borderRadius: 8, 
+            padding: 16, 
+            marginTop: 16 
+          }}>
+            <button 
+              onClick={() => setShowPerformanceMetrics(!showPerformanceMetrics)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#1E3A8A',
+                fontWeight: 600,
+                fontSize: 14,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8
+              }}
+            >
+              재현율 계산 방법 {showPerformanceMetrics ? '▼' : '▶'}
+            </button>
+            
+            {showPerformanceMetrics && (
+              <div style={{ marginTop: 12, color: '#1E3A8A', fontSize: 13, lineHeight: 1.5 }}>
+                <p><strong>재현율 (Recall) = TP / (TP + FN) × 100</strong></p>
+                <p>• TP (True Positive): 재구매 예측 성공 = 229건</p>
+                <p>• FN (False Negative): 재구매를 놓침 = 447건</p>
+                <p>• 재현율 = 229 / (229 + 447) × 100 = {performanceMetrics.recall}%</p>
+                <p style={{ marginTop: 8, fontStyle: 'italic' }}>
+                  <strong>비즈니스 의미:</strong> 실제 재구매 고객 중 {performanceMetrics.recall}%를 정확히 찾아냄
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

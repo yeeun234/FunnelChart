@@ -14,12 +14,14 @@ function JoinUs() {
   const navigate = useNavigate();
   const MIN_ID_LENGTH = 4;      // 예: 아이디 최소 4자
   const MIN_PW_LENGTH = 8;      // 예: 비밀번호 최소 8자
+  const MIN_NAME_LENGTH = 2;    // 이름 최소 2자
   const isLoggedIn = !!localStorage.getItem("accessToken");
 
 
   useEffect(() => {
     inputRef.current && inputRef.current.focus();
   }, []);
+
   function isValidPassword(pw) {
   // 8자 이상, 대문자, 소문자, 숫자, 특수문자 각각 하나 이상 포함
   const lengthCheck = pw.length >= 8;
@@ -30,16 +32,34 @@ function JoinUs() {
   return lengthCheck && upperCheck && lowerCheck && numberCheck && specialCheck;
 }
 
+  function isValidId(id) {
+    // 영어와 숫자만 허용하고 최소 4자 이상
+    const englishAndNumberOnly = /^[a-zA-Z0-9]+$/.test(id);
+    const lengthCheck = id.length >= MIN_ID_LENGTH;
+    return englishAndNumberOnly && lengthCheck;
+  }
+
+  function isValidName(name) {
+    // 이름은 최소 2자 이상
+    return name.length >= MIN_NAME_LENGTH;
+  }
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
-    if (password !== passwordConfirm) {
-      alert("비밀번호가 일치하지 않습니다.");
+    
+    if (!isValidName(username)) {
+      alert(`이름은 최소 ${MIN_NAME_LENGTH}자 이상이어야 합니다.`);
       return;
     }
-    if (id.length < MIN_ID_LENGTH) {
-      alert(`아이디는 최소 ${MIN_ID_LENGTH}자 이상이어야 합니다.`);
+    
+    if (!isValidId(id)) {
+      alert(`아이디는 영어와 숫자만 사용 가능하며, 최소 ${MIN_ID_LENGTH}자 이상이어야 합니다.`);
+      return;
+    }
+    
+    if (password !== passwordConfirm) {
+      alert("비밀번호가 일치하지 않습니다.");
       return;
     }
     if (password.length < MIN_PW_LENGTH) {
@@ -49,19 +69,48 @@ function JoinUs() {
     if (!isValidPassword(password)) {
       alert("비밀번호는 8자 이상, 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다.");
       return;
-  }
+    }
     try {
-      const response = await axios.post('http://10.125.121.173:8080/auth/signup', {
+      // 1. 회원가입 요청
+      await axios.post('http://10.125.121.173:8080/auth/signup', {
         username: username,
         id: id,
         password: password,
       });
-      // 회원가입 성공 시 처리
-      alert('회원가입이 완료되었습니다!');
-      navigate("/login");
+      
+      alert('회원가입이 완료되었습니다! 자동으로 로그인합니다.');
+
+      // 2. 바로 로그인 처리
+      const loginRes = await axios.post('http://10.125.121.173:8080/login', {
+        id: id,
+        password: password
+      });
+
+      const token = loginRes.headers.authorization;
+      const role = loginRes.data.role;
+      const resUsername = loginRes.data.username;
+
+      if (token) {
+        localStorage.setItem("accessToken", token);
+        localStorage.setItem("userRole", role);
+        localStorage.setItem("username", resUsername);
+        
+        // 3. 메인 페이지로 이동
+        navigate("/"); 
+      } else {
+        // 혹시 모를 예외 처리
+        alert("로그인에 실패했습니다. 로그인 페이지로 이동합니다.");
+        navigate("/login");
+      }
+
     } catch (error) {
       // 에러 처리
-      alert('회원가입에 실패했습니다.');
+      console.error("회원가입 또는 자동 로그인 실패:", error);
+      if (error.response && error.response.status === 409) { // 예: ID 중복 에러
+        alert("이미 사용 중인 아이디입니다.");
+      } else {
+        alert('회원가입 중 오류가 발생했습니다.');
+      }
     }
   };
   const handleLogout = () => {
@@ -76,8 +125,8 @@ function JoinUs() {
       alert("아이디를 입력하세요.");
       return;
     }
-     if (id.length < MIN_ID_LENGTH) {
-      alert(`아이디는 최소 ${MIN_ID_LENGTH}자 이상이어야 합니다.`);
+    if (!isValidId(id)) {
+      alert(`아이디는 영어와 숫자만 사용 가능하며, 최소 ${MIN_ID_LENGTH}자 이상이어야 합니다.`);
       return;
     }
     try {

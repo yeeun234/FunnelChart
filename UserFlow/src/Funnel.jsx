@@ -135,6 +135,12 @@ export default function FunnelPage() {
       <div style={{ marginTop: "10px", padding: "14px 0 0 0", color: "#444", fontSize: 22, fontWeight: "bold", display: "flex", alignItems: "left" }}>
         결제수단에 따라 프로세스 어느 지점에서 고객여정이 중단되는가?
       </div>
+      <p style={{ textAlign: 'right', fontSize: '13px', color: '#888', marginTop: '10px', marginBottom: '24px' }}>
+          * 본 분석은 Olist E-commerce 데이터셋을 기반으로 합니다. 
+          <a href="/db/archive.zip" download="olist_ecommerce_dataset.zip" style={{ marginLeft: '8px', color: '#01C1FE', textDecoration: 'underline', fontWeight:'600' }}>
+            원본 데이터 다운로드
+          </a>
+        </p>
 
       {/* 결제수단 버튼 */}
       <div style={{ width: '100vw', display: "flex", alignItems: "center", gap: 16, margin: "32px 0 0 40px" }}>

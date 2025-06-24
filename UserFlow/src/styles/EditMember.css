@@ -1,0 +1,227 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.member-edit-container {
+    width: 90%;
+  max-width: 680px;
+  margin: 40px auto;
+  padding: 40px;
+  text-align: left;
+}
+
+.edit-form {
+  width: 100%;
+}
+
+.member-edit-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #000000;
+}
+
+.member-edit-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #212529;
+  margin: 0;
+}
+
+.member-edit-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.form-label {
+  width: 120px;
+  padding-top: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.input-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input {
+  width: 100%;
+  max-width: 320px;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 15px;
+  height: 38px;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #01C2FD;
+  /* box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25); */
+}
+
+.form-input:disabled {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+
+.static-info {
+  background-color: #e9ecef;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 15px;
+  color: #6c757d;
+  width: 100%;
+  max-width: 320px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.password-placeholder {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+.password-placeholder .form-input {
+    flex: 1;
+}
+
+.toggle-pw-btn {
+  padding: 8px 12px;
+  border: 1px solid #b5b8bb;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  height: 38px;
+  box-sizing: border-box;
+  color: #757575;
+}
+
+.toggle-pw-btn.cancel {
+  border-color: #b5b8bb;
+  color: #757575;
+}
+
+.password-change-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.password-current {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.password-current .form-input {
+    flex: 1;
+}
+
+.password-hint {
+  font-size: 12px;
+  color: #6c757d;
+  margin: 0 0 0 4px;
+}
+
+.submit-pw-btn {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #01C2FD;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #01C2FD;
+  cursor: pointer;
+  font-size: 14px;
+  height: 38px;
+  box-sizing: border-box;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.submit-pw-btn:hover {
+    outline: none;
+    background-color: #01C2FD;
+    color: #fff;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px 0;
+    margin-top: 10px;
+    border-bottom: 2px solid #000000;
+    /* margin-right: calc((100% - 120px - 480px) / 2);  */
+    /* A bit tricky to align */
+}
+
+.withdraw-link {
+    font-size: 14px;
+    color: #6c757d;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.cancle-btn,
+.confirm-btn{
+  padding: 12px 60px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancle-btn{
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .member-edit-container {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .password-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .submit-btn {
+    width: 100%;
+  }
+}

@@ -14,6 +14,7 @@ import AllRequestList from "./AllRequestList";
 import Request from "./Request";
 import MyRequestList from "./MyRequestList";
 import RequestDetail from "./RequestDetail";
+import Edit from "./EditMember.jsx"
 
 
 
@@ -33,6 +34,7 @@ function App() {
       <Route path="/mypage" element={<MyRequestList/>} />
       <Route path="/manager/request" element={<AllRequestList/>} />
       <Route path="/request/:id" element={<RequestDetail/>} />
+      <Route path="/mypage/edit" element={<Edit/>} />
       
 
 

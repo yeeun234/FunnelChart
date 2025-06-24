@@ -90,6 +90,13 @@ export default function DeliveryAnalysis() {
       <div style={{marginTop: "10px",  padding: "14px 0 0 0", color: "#444", fontSize: 22, fontWeight: "bold", display: "flex", alignItems: "left" }}>
         배송 기간이 고객 재구매에 미치는 영향 분석 (가상 시나리오)
       </div>
+      <p style={{ textAlign: 'right', fontSize: '13px', color: '#888', marginTop: '10px', marginBottom: '24px' }}>
+          * 본 분석은 Olist E-commerce 데이터셋을 기반으로 합니다. 
+          <a href="/db/archive.zip" download="olist_ecommerce_dataset.zip" style={{ marginLeft: '8px', color: '#01C1FE', textDecoration: 'underline', fontWeight:'600' }}>
+            원본 데이터 다운로드
+          </a>
+        </p>
+      
 
       {/* 배송 속도 버튼 */}
       <div style={{ width: '100vw', display: "flex", alignItems: "center", gap: 16, margin: "32px 0 0 40px" }}>

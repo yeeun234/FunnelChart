@@ -6,10 +6,11 @@
 
 /* 기본 레이아웃 */
 .mypage-container {
-  width: 540px;
+  width: 600px;
   font-family: sans-serif;
   /* background-color: #f7f8fa; */
   color: #333;
+  text-align: left;
 }
 
 /* 헤더 */
@@ -33,46 +34,39 @@
 .profile-section {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 24px;
+  border-bottom: 2px solid ;
 }
 
 
 .profile-name {
-  font-size: 24px;
-}
-
-.name-highlight {
-  font-size: 15px;
+  all: unset;
+  font-size: 25px;
   font-weight: 600;
   color: #222;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.profile-name:focus{
+  outline: none;
 }
 
 /* 문의 테이블 */
 .inquiry-section {
-  margin-top: 20px;
+  margin: 20px 12px 0 12px;
 }
 
-.section-title {
+
+/* .section-title {
   font-size: 16px;
   font-weight: bold;
   border-bottom: 2px solid #000;
   padding-bottom: 8px;
   margin-bottom: 16px;
-}
-
-/* .inquiry-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.inquiry-table th,
-.inquiry-table td {
-  padding: 12px;
-  border-bottom: 1px solid #ccc;
-  text-align: left;
 } */
+
+
 
 .status.approved {
   color: #0077cc;

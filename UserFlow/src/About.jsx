@@ -17,6 +17,7 @@ function About() {
   const [sectionInView, setSectionInView] = useState(false);
   const [imageInView, setImageInView] = useState(false);
   const isLoggedIn = !!localStorage.getItem('accessToken');
+  const isManager = !!localStorage.getItem('userRole') === 'ROLE_MANAGER';
 
 
   useEffect(() => {
@@ -25,7 +26,8 @@ function About() {
       const scrollY = window.scrollY;
       let opacity = 1 - Math.min(scrollY / maxScroll, 1);
       document.body.style.transition = 'background 0.5s';
-      document.body.style.background = `linear-gradient(90deg, rgba(230,249,254,${opacity}) 0%, rgba(210,240,255,${opacity}) 100%)`;    };
+      document.body.style.background = `linear-gradient(90deg, rgba(230,249,254,${opacity}) 0%, rgba(210,240,255,${opacity}) 100%)`;
+    };
     // Set on mount
     handleScroll();
     window.addEventListener('scroll', handleScroll);
@@ -36,7 +38,7 @@ function About() {
       document.body.style.transition = '';
     };
   }, []);
-  
+
   // Hero Section Observer
   useEffect(() => {
     const observer = new window.IntersectionObserver(
@@ -106,7 +108,7 @@ function About() {
           <p className="heroSubtitle">
             지금 바로 데이터 기반 인사이트를 경험해보세요!
           </p>
-          <Link to={isLoggedIn ? "/inquries" : "/login"}>
+          <Link to={isLoggedIn ? (isManager ? "/manager/request" : "/request") : "/login"}>
             <button className="heroBtn">무료로 시작하기</button>
           </Link>
         </div>
@@ -118,15 +120,15 @@ function About() {
         className={`mainImgContainer fade-section${imageInView ? ' fade-in' : ''}`}
       >
         <Link to="/dashboard">
-        <video
-          src={mainVideo}
-          className="mainImg"
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{ objectFit: 'cover', width: '100%', borderRadius: '24px' }}
-        />
+          <video
+            src={mainVideo}
+            className="mainImg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{ objectFit: 'cover', width: '100%', borderRadius: '24px' }}
+          />
         </Link>
       </div>
 
@@ -137,11 +139,10 @@ function About() {
       >
         <h2 className="sectionTitle">프로젝트 소개</h2>
         <p className="sectionDesc">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+          UserFlow는 누구나 쉽게 데이터 분석을 의뢰하고,<br/> 데이터로 더 나은 인사이트를 얻고 싶은 모든 분들을 위해 신뢰할 수 있는 분석 환경을 제공하는 맞춤형 데이터 분석 의뢰 플랫폼입니다.<br />
+          고객은 간편하게 분석을 요청하고 진행 상황을 확인할 수 있으며,<br/> 매니저는 문의된 분석 요청을 효율적으로 관리할 수 있습니다.<br />
         </p>
-        
+
       </section>
     </div>
   );

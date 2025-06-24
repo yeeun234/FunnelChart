@@ -23,8 +23,56 @@ export default function Request() {
     return value;
   };
 
+  const isValidEmail = (email) => {
+    // Basic email format validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    if (!emailRegex.test(email)) {
+      return false;
+    }
+    
+    // Additional checks for reasonable email format
+    const [localPart, domain] = email.split('@');
+    
+    // Check local part (before @)
+    if (localPart.length < 2 || localPart.length > 64) {
+      return false;
+    }
+    
+    // Check domain (after @)
+    if (domain.length < 4 || domain.length > 253) {
+      return false;
+    }
+    
+    // Check if domain has at least one dot and reasonable TLD
+    const domainParts = domain.split('.');
+    if (domainParts.length < 2) {
+      return false;
+    }
+    
+    // Check TLD (top-level domain) length
+    const tld = domainParts[domainParts.length - 1];
+    if (tld.length < 2 || tld.length > 6) {
+      return false;
+    }
+    
+    // Check if TLD contains only letters
+    if (!/^[a-zA-Z]+$/.test(tld)) {
+      return false;
+    }
+    
+    return true;
+  };
+
   const saveInquiry = async (e) => {
     e.preventDefault();
+    
+    // Email validation
+    if (!isValidEmail(email)) {
+      alert('올바른 이메일 형식을 입력해주세요.');
+      return;
+    }
+    
     try{
       await axios.post("http://10.125.121.173:8080/api/member/inquiry", {
         name: name,
@@ -64,7 +112,7 @@ export default function Request() {
                   name="company" placeholder="기관/회사명" className="input-box" />
           </div>
           <div className="form-row">
-            <input type="text" value={phone}  onChange={e=> setPhone(e.target.value.trim())}
+            <input type="number" value={phone}  onChange={e=> setPhone(e.target.value.trim())}
                   name="contact" placeholder="연락처(숫자만 입력)" className="input-box" />
             <input  type="email"  value={email}  onChange={e=> setEmail(e.target.value.trim())} 
                   name="email" placeholder="이메일" className="input-box" />

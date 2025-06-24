@@ -80,6 +80,7 @@ body, html {
   all: unset;
   width: 70%;
   font-size: 15px;
+  
 }
 
 .input-section{
@@ -193,15 +194,15 @@ body, html {
   margin-top: 24px;
   /* background: #f3f6fa;
   border-radius: 12px; */
-  padding: 35px 18px 20px 18px;
-  border-bottom: 2px solid #000000;
+  padding: 35px 18px 0 18px;
+  
 }
 .history-header {
   font-weight: bold;
   cursor: pointer;
   /* border-bottom: 1px solid #e0e0e0; */
-  padding-bottom: 8px;
-  margin-bottom: 10px;
+  /* padding-bottom: 8px; */
+  /* margin-bottom: 10px; */
   font-size: 16px;
 }
 .toggle-arrow {
@@ -223,10 +224,12 @@ body, html {
   font-size: 14px;
 }
 .button-group {
+  padding-top: 30px;
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-top: 30px;
+  border-top: 2px solid #000000;
 }
 .cancel-btn,
 .confirm-btn {

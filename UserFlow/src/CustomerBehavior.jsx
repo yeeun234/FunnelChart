@@ -44,14 +44,46 @@ const descriptions = {
 export default function CustomerBehavior() {
   const [selectedTab, setSelectedTab] = useState('frequency');
   const [activeTab, setActiveTab] = useState('chart');
+  const [isNoteOpen, setIsNoteOpen] = useState(true);
 
   return (
     <div className='appContainer'>
       <NavBar />
 
-      <div style={{ marginTop: "10px", padding: "14px 0 0 0", color: "#444", fontSize: 22, fontWeight: "bold", display: "flex", alignItems: "left" }}>
-        고객 행동 패턴 분석
+      <div style={{
+          background: '#E3F2FD', 
+          border: '1px solid #90CAF9', 
+          borderRadius: 8, 
+          padding: '16px 24px', 
+          margin: '10px 0px 0', 
+          color: '#1E3A8A',
+          fontSize: 15,
+        }}>
+        <div 
+          onClick={() => setIsNoteOpen(!isNoteOpen)} 
+          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', fontWeight: 'bold' }}
+        >
+          <span style={{color: '#1976D2'}}>참고</span>
+          <span>{isNoteOpen ? '접기 ▲' : '펴기 ▼'}</span>
+        </div>
+        
+        {isNoteOpen && (
+          <div style={{ marginTop: '12px', lineHeight: 1.6 }}>
+            이 페이지는 고객 행동 패턴을 보여주는 <strong>가상 시나리오</strong>입니다. 실제 Olist 데이터셋의 96,413명 고객과는 다른 <strong style={{color: '#1976D2'}}>데모용 데이터</strong>를 사용하고 있습니다. 실제 고객 행동 분석을 원하시면 <strong style={{color: '#1976D2'}}>'분석 한눈에 보기'</strong> 대시보드를 참고해 주세요.
+          </div>
+        )}
       </div>
+
+      <div style={{ marginTop: "10px", padding: "14px 0 0 0", color: "#444", fontSize: 22, fontWeight: "bold", display: "flex", alignItems: "left" }}>
+        고객 행동 패턴 분석 (가상 시나리오)
+      </div>
+      <p style={{ textAlign: 'right', fontSize: '13px', color: '#888', marginTop: '10px', marginBottom: '24px' }}>
+          * 본 분석은 Olist E-commerce 데이터셋을 기반으로 합니다. 
+          <a href="/db/archive.zip" download="olist_ecommerce_dataset.zip" style={{ marginLeft: '8px', color: '#01C1FE', textDecoration: 'underline', fontWeight:'600' }}>
+            원본 데이터 다운로드
+          </a>
+        </p>
+      
 
       {/* 분석 유형 버튼 */}
       <div style={{ width: '100vw', display: "flex", alignItems: "center", gap: 16, margin: "32px 0 0 40px" }}>

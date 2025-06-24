@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { IoIosArrowForward } from "react-icons/io";
-import Prev from './Prev';
+// import Prev from './Prev';
+import NavBar from './NavBar';
 
 export default function MyRequestList() {
     const [list, setList] = useState([]);
     const navi = useNavigate();
+    const [name, setName] = useState(localStorage.getItem("username") || ""); // 초기값 설정
     
     useEffect(()=>{
         const getMyList = async() => {
@@ -20,8 +22,6 @@ export default function MyRequestList() {
                     }
                     }
                 );
-                console.log(res);
-                console.log(res.data); // 이둘의 차이------------------------------------------------------?
                 setList(Array.isArray(res.data) ? res.data : []);
             } catch(err){
                 console.error("getMyList err: ",err, err.response)
@@ -30,6 +30,20 @@ export default function MyRequestList() {
 
         getMyList();
     },[]);
+
+    useEffect(() => {
+        const handleStorageChange = () => {
+            setName(localStorage.getItem("username") || "");
+        };
+    
+        window.addEventListener("storage", handleStorageChange);
+        window.addEventListener("usernameChanged", handleStorageChange);
+    
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+            window.removeEventListener("usernameChanged", handleStorageChange);
+        };
+    }, []);
 
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
@@ -59,12 +73,18 @@ export default function MyRequestList() {
 
         
         <div className="mypage-container">
-            <div className="profile-section">
-                <div className="name-highlight"><span style={{color: '#01C2FD'}}>{localStorage.getItem("username")}</span> 님의 문의목록</div>
-                <Prev />
+            <NavBar/>
+
+            <div className="profile-section" style={{marginTop: '100px'}}>
+                <button className="profile-name" onClick={()=>{navi("/mypage/edit")}}>
+                    <span style={{color: '#01C2FD'}}>{name}</span> 님<IoIosArrowForward/>
+                </button>
+                {/* <Prev/> */}
             </div>
 
             <section className="inquiry-section">
+                <h2 className="inquiry-title" style={{fontSize: '17px', fontWeight:'600', marginBottom:'13px'}}>문의목록</h2>
+
             <div className="inquiry-list">
                             {list.map(item => (
                                 <div className="inquiry-card" key={item.inquiryId} onClick={()=>handleRowClick(item.inquiryId)}>
